@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+.main{
+/* 	background: linear-gradient(135deg, #b795f4, #78f3de)fixed; */
+	background-image: url(back-02.jpg);
+	background-repeat: no-repeat;
+	background-position: top center;
+	background-size: cover; 
+}
+#bar{
+	background-color: white;
+	display:table;
+}
+#icon{padding: 5px;}
+.margin_20{
+	margin: 20px;
+}
+#bar .baby{display:table-cell;
+      		margin-top: 5px;
+      		margin-bottom: 5px;}

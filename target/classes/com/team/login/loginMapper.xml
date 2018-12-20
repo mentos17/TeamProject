@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="login">
+	<select id="loginCheck" resultType="String">
+		SELECT NAME FROM MEMBER
+		WHERE ID = #{ID} AND PWD = #{PWD}
+	</select>
+	<select id="viewMember" resultType="com.team.login.MemberVO">
+		SELECT NAME, ID, EMAIL, DATE FROM MEMBER
+		WHERE ID = #{ID} AND PWD = #{PWD}
+	</select>
+</mapper>
