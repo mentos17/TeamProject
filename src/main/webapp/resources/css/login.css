@@ -1,0 +1,39 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&subset=korean');
+.login_layer #ID,
+.login_layer #PWD{
+	border-radius: 5px;
+	border: 1px solid #4497fd;
+}
+#loginArea{
+			display: table; margin-left: auto; margin-right: auto;
+			position:absolute; 
+   			top:0;right:0;bottom:0;left:0; 
+     		display:flex; 
+     		align-items:center; 
+     		justify-content:center; 
+    		display: inline-block; 
+      		display:-webkit-flex; 
+     		 -webkit-align-item: center; 
+    	 	-webkit-justify-content:center;    	 	
+}
+.padding_area{padding: 40px 30px;}
+.input_login{width: 225px;
+			 margin-bottom: 5px;}
+#LoginBtn{width: 225px;
+		  height: 50px;
+		  border-radius: 5px;
+		  background-color: #4497fd;
+		  border: none;
+		  padding: 2px;
+		  color: white;
+		  font-weight: 600;}
+#RegisterBtn{width: 225px;
+		  height: 50px;
+		  border-radius: 5px;
+		  background-color: #cbcbcd;
+		  border: none;
+		  padding: 2px;
+		  color: white;
+		  font-weight: 600;
+		  margin-top: 5px;}

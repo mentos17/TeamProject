@@ -1,87 +1,165 @@
 package com.team.gallery.util;
 
+
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+
+import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 public class UploadUtil {
 	private static final Logger logger = LoggerFactory.getLogger(UploadUtil.class);
 	
-	public static String UploadFile(String uploadPath, String originalName, byte[] fileData) throws Exception {
+	
+	//썸네일 이미지 생성
+	private static String makeThumbnail(String uploadRootPath, String datePath,String fileName) throws Exception{
+		//원본이미지를 메모리상에 로딩
+		BufferedImage originalImg = ImageIO.read(new File(uploadRootPath + datePath, fileName));
+		//원본이미지를 축소
+		BufferedImage thumbnailImg = Scalr.resize(originalImg, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT, 100);
+		//썸네일 파일명
+		String thumbnailImgName = "s_"+fileName;
+		//썸네일 업로드 경로
+		String fullPath = uploadRootPath + datePath + File.separator + thumbnailImgName;
 		
-		UUID uid = UUID.randomUUID();
+		//썸네일 파일 객체 생성
+		File newFile = new File(fullPath);
 		
-		String imageName = uid.toString() + "_" + originalName;
-		String imagePath = calcPath(uploadPath);
+		//썸네일 파일 확장자 추출
+		String formatName = MediaUtil.getFromatName(fileName);
 		
-		File target = new File(uploadPath + imagePath, imageName);
+		//썸네일 파일 저장
+		ImageIO.write(thumbnailImg, formatName, newFile);
 		
-		FileCopyUtils.copy(fileData, target);
+		return thumbnailImgName;
 		
-		String formatName = originalName.substring(originalName.lastIndexOf(".") + 1);
+	}
+	//파일저장 경로 치환
+	private static String replaceSavedFilePath(String datePath, String fileName) {
+		String saveFilePath = datePath + File.separator + fileName;
+		return saveFilePath.replace(File.separatorChar, '/');
+	}
+	
+	//파일네임 중복방지
+	private static String getUuidFileName(String originalFileName) {
+		return UUID.randomUUID().toString() + "_"+ originalFileName;
+	}
+	
+	//기본경로 지정
+	public static String getRootPath(String fileName, HttpServletRequest request) {
 		
-		String uploadFileName = null;
+		String rootPath = "/resources/upload";
+		MediaType mediaType = MediaUtil.getMediaType(fileName);
 		
-		if (MediaUtil.getMediaType(formatName) != null) {
-			uploadFileName = makeIcon(uploadPath, imagePath, imageName);
+		
+		if(mediaType != null) {
+			return request.getSession().getServletContext().getRealPath(rootPath + "/images"); 
 		}
+		return request.getSession().getServletContext().getRealPath(rootPath + "/files");	//일반 파일 경로
 		
-		return uploadFileName;
 	}
 	
-	private static String calcPath(String uploadPath) {
-		
-		Calendar cal = Calendar.getInstance();
-		
-		String yearPath = File.separator + cal.get(Calendar.YEAR);
-		String monthPath = yearPath + File.separator + new DecimalFormat("00").format(cal.get(Calendar.MONTH) + 1);
-		String datePath = monthPath + File.separator + new DecimalFormat("00").format(cal.get(Calendar.DATE));
-		
-		makeDir(uploadPath, yearPath, monthPath, datePath);
-		
-		logger.info(datePath);
-		
-		return datePath;
-	}
-	
-	private static void makeDir(String uploadPath, String... paths) {
-		
-		if (new File(uploadPath + paths[paths.length - 1]).exists()) {
+	//날짜 별 폴더 생성
+	private static void makeDateDir(String uploadPath,String... paths) {
+		if(new File(uploadPath + paths[paths.length-1]).exists()) {
 			return;
 		}
 		
-		for (String path : paths) {
+		for(String path : paths) {
 			File dirPath = new File(uploadPath + path);
-			
-			if (!dirPath.exists()) {
+			if(!dirPath.exists()) {
 				dirPath.mkdir();
 			}
 		}
 	}
 	
-	/*// 썸네일 생성
-	private static String makeThumbnail(String uploadPath, String path, String name) throws Exception {
-		BufferedImage sourceImg = ImageIO.read(new File(uploadPath + path, name));
-		BufferedImage destImg = Scalr.resize(sourceImg, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT, 100);
+	//날짜 폴더명 추출
+	private static String getDatePath(String uploadPath) {
 		
-		String thumbnailName = uploadPath + path + File.separator + "s_" + name;
+		Calendar cal = Calendar.getInstance();
+		String year = File.separator + cal.get(Calendar.YEAR);
+		String month = year + File.separator + new DecimalFormat("00").format(cal.get(cal.MONTH)+1);
+		String date = month + File.separator + new DecimalFormat("00").format(cal.get(cal.DATE));
 		
-		File newFile = new File(thumbnailName);
-		String formatName = name.substring(name.lastIndexOf(".") + 1);
+		makeDateDir(uploadPath, year,month,date);
 		
-		ImageIO.write(destImg, formatName.toUpperCase(), newFile);
-		
-		return thumbnailName.substring(uploadPath.length()).replace(File.separatorChar, '/');
-	}*/
-	
-	private static String makeIcon(String uploadPath, String path, String fileName) throws Exception {
-		String iconName = uploadPath + path + File.separator + fileName;
-		
-		return iconName.substring(uploadPath.length()).replace(File.separatorChar, '/');
+		return date;
 	}
+	
+	//파일 삭제 처리
+	public static void deleteFile(String fileName,HttpServletRequest request) {
+		String rootPath = getRootPath(fileName, request);
+		
+		//1.원본 이미지 파일 삭제
+		MediaType mediaType = MediaUtil.getMediaType(fileName);
+		if(mediaType !=null) {
+			String originalImg = fileName.substring(0, 12)+fileName.substring(14);
+			new File(rootPath + originalImg.replace('/', File.separatorChar)).delete();
+		}
+		//2. 파일 삭제(썸네일이미지 or 일반 파일)
+		new File(rootPath + fileName.replace('/', File.separatorChar)).delete();
+	}
+	
+	//파일 출력을 위한 HttpHeader 설정
+	public static HttpHeaders getHttpHeaders(String fileName) throws Exception{
+		
+		MediaType mediaType = MediaUtil.getMediaType(fileName);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		
+		//이미지 파일
+		if(mediaType != null) {
+			httpHeaders.setContentType(mediaType);
+			return httpHeaders;
+		}
+		
+		//이미지 파일x
+		fileName = fileName.substring(fileName.indexOf("_") +1);	//UUID제거
+		httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);	//다운로드 MIME타입 설정
+		
+		//파일명 한글 인코딩처리
+		httpHeaders.add("Content-Disposition",
+						"attachment; filename=\"" + new String(fileName.getBytes("UTF-8"),"ISO-8859-1")+"\"");
+		
+		return httpHeaders;
+	}
+	
+	
+	//파일 업로드 처리
+	public static String uplaodFile(MultipartFile file, HttpServletRequest request) throws Exception{
+		
+		String originalFileName = file.getOriginalFilename();	//파일명
+		byte[] fileData = file.getBytes();	//파일 데이터
+		
+		//1.파일명 중복 방지 처리
+		String uuidFileName = getUuidFileName(originalFileName);
+		
+		//2. 파일 업로드 경로 설정
+		String rootPath = getRootPath(originalFileName, request);	//기본경로 추출(이미지 or 일반 파일)
+		String datePath = getDatePath(rootPath);
+		
+		//3.서버에 파일 저장
+		File target = new File(rootPath + datePath,uuidFileName);
+		FileCopyUtils.copy(fileData, target);
+		
+		//4.이미지 파일인 경우 썸네일이미지 생성
+		if(MediaUtil.getMediaType(originalFileName) != null) {
+			uuidFileName = makeThumbnail(rootPath, datePath, uuidFileName);
+		}
+		
+		//5.파일 저장 경로 치환
+		return replaceSavedFilePath(datePath, uuidFileName);
+	}
+	
+	
 }

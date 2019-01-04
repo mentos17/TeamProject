@@ -5,36 +5,47 @@
 <mapper namespace="com.team.follow.DAO.FollowDAO">
 
 	<select id="GetAllFollower" resultType="com.team.follow.VO.FollowVO">
-		select follower_id 
-		from follow
-		where following_id = #{following_id}
+		select *
+		from TB_FOLLOW
+		where following_id = #{id}
+		limit ${pageNum} , 10
 	</select>
 	
 	<select id="GetAllFollowing" resultType="com.team.follow.VO.FollowVO">
-		select following_id
-		from follow
-		where follower_id = #{follower_id}
+		select *
+		from TB_FOLLOW
+		where follower_id = #{id}
+		limit ${pageNum} , 10
 	</select>
 	
 	<delete id="DeleteFollowing" parameterType="com.team.follow.VO.FollowVO">
-		delete from follow
+		delete from TB_FOLLOW
 		where following_id = #{following_id} and follower_id = #{follower_id}
 	</delete>
 	
 	
 	<insert id="InsertFollowing" parameterType="com.team.follow.VO.FollowVO">
-		insert into follow (follower_id, following_id, follow_date)
+		insert into TB_FOLLOW (follower_id, following_id, follow_date)
 		values (#{follower_id}, #{following_id}, now())	
 	</insert>
 	
 	
 	<select id="IsFollowing" parameterType="com.team.follow.VO.FollowVO" resultType="int">
 		select count(*)
-		from follow a
+		from TB_FOLLOW a
 		where exists(select *
-					from follow b
+					from TB_FOLLOW b
 					where b.following_id = #{following_id} and b.follower_id = #{follower_id})
 	
+	</select>
+	
+	<select id="getNotFollowingList" resultType="com.team.follow.VO.FollowVO">
+		select distinct m.ID as following_id
+		from TB_FOLLOW f, MEMBER m
+		where m.ID != #{following_id} and m.ID not in (select following_id
+							from TB_FOLLOW
+		                    where follower_id = #{following_id})
+		order by rand() limit 5;
 	</select>
 
 

@@ -2,6 +2,7 @@ package com.team.follow.DAO;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +18,17 @@ public class FollowDAOImpl implements FollowDAO {
 	
 	
 	@Override
-	public List<FollowVO> GetAllFollower(String following_id) {
+	public List<FollowVO> GetAllFollower(Map<String, String> FollowerInfo) {
 		// 해당 아이디의 모든 팔로워 목록 리턴(follower_id, follow_date)
 		
-		return sqlSession.selectList("GetAllFollower", following_id);
+		return sqlSession.selectList("GetAllFollower", FollowerInfo);
 	}
 
 	@Override
-	public List<FollowVO> GetAllFollowing(String follower_id) {
+	public List<FollowVO> GetAllFollowing(Map<String, String> FollowingInfo) {
 		// 해당 아이디의 모든 팔로잉 목록 리턴(following_id, follow_date)
 
-		return sqlSession.selectList("GetAllFollowing", follower_id);
+		return sqlSession.selectList("GetAllFollowing", FollowingInfo);
 	}
 
 	@Override
@@ -60,5 +61,13 @@ public class FollowDAOImpl implements FollowDAO {
 			return false;
 
 	}
+
+	@Override
+	public List<FollowVO> getNotFollowingList(String follower_id) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("getNotFollowingList", follower_id);
+	}
+	
+	
 
 }

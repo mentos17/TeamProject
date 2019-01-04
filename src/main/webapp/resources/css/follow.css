@@ -1,0 +1,97 @@
+@charset "UTF-8";
+
+.fbBtn{
+	font-weight: bold;
+	border-radius: 20px;
+}
+
+.followBtn {
+	color: #4569c2;
+	border: solid 1px #4569c2;
+}
+
+.unfollowBtn {
+    background-color: #2d468c;
+	color: white;
+	border: solid 1px #4569c2;
+}
+
+.followingBtn{
+	color: white;
+	border: solid 1px #4569c2;
+	background-color: #4569c2;
+}
+
+.followBtn:hover {
+	color: #4569c2 !important;
+	background-color: #d1deff !important;
+}
+
+.unfollowBtn:hover{
+	background-color: #2d468c !important;
+	color: white !important;
+	
+}
+
+.followingBtn:hover{
+/* 	color: white !important;
+	background-color: #4569c2 !important; */
+	background-color: #2d468c !important;
+	color: white !important;
+	border: solid 1px #4569c2;
+}
+
+.followingBtn span:nth-child(2){
+	display : none;
+}
+
+.followingBtn:hover span:nth-child(1){
+	display : none;
+}
+
+.followingBtn:hover span:nth-child(2){
+	display : inherit;
+}
+
+
+
+.blockBtn {
+	color: red;
+	border: solid 1px;
+	border-color: red;
+}
+
+.unblockBtn {
+	color: white;
+	background-color: #b31f1f;
+	border-color: red;
+}
+
+.blockingBtn {
+	color: white;
+	background-color: #fd5f5f;
+    border-color: #fd5f5f;
+}
+
+.blockBtn:hover {
+	color: red !important;
+	background-color: #ffd1d1 !important;
+}
+
+.unblockBtn:hover{
+	color: white !important;
+	background-color: #b31f1f !important;
+}
+
+.blockingBtn:hover{
+	color: white !important;
+	background-color: #fd5f5f !important;
+}
+.fbhide{
+	display: none;
+}
+
+
+a{
+	text-decoration: none;	
+}

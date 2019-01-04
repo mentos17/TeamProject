@@ -1,0 +1,15 @@
+@charset "UTF-8";
+.mypage_area{
+	padding: 30px;
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
+}
+.mypage_area td{
+	margin-bottom: 5px;
+}
+.mypage_area .mypage_input{
+	border-radius: 5px;
+	border: 1px solid #4497fd;
+}
+

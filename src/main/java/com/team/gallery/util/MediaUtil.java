@@ -18,6 +18,12 @@ public class MediaUtil {
 	
 	public static MediaType getMediaType(String type) {
 		
-		return mediaMap.get(type.toUpperCase());
+		String formatName =getFromatName(type);
+		
+		return mediaMap.get(formatName);
+	}
+	
+	static String getFromatName(String fileName) {
+		return fileName.substring(fileName.lastIndexOf(".")+1).toUpperCase();
 	}
 }

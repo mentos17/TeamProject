@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+<configuration>
+
+	<!-- 
+		typeAliases 지정하면 mapper에서
+		parameterType,resultType 에서 
+		type에 적힌 경로를 alias로  줄여서 호출할 수 있다.
+	 -->
+	<typeAliases>
+   		<typeAlias alias="LoginDTO" type="com.team.login.DTO.LoginDTO" />
+   		<typeAlias alias="MemberVO" type="com.team.member.VO.MemberVO" />
+		<typeAlias alias="MessageVO" type="com.team.message.VO.MessageVO" />
+		<typeAlias alias="SendMessageVO" type="com.team.message.VO.SendMessageVO" />
+		<typeAlias alias="DealDTO" type="com.team.deal.DTO.DealDTO" />
+	</typeAliases>
+
+	<!-- <mappers>
+	  <mapper resource="com/team/login/Mapper/loginMapper.xml" />
+	</mappers> -->
+
+
+</configuration>

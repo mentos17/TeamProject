@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-  
+
 <mapper namespace="com.team.block.DAO.BlockDAO">
 
 	<select id="GetAllBlocker" resultType="com.team.block.VO.BlockVO">
-		select blocker_id 
-		from Block
-		where blocking_id = #{blocking_id}
+		select blocker_id select *
+		from Block from Block
+		where blocking_id = #{blocking_id} where blocker_id = #{blocker_id}
 	</select>
-	
+
 	<select id="GetAllblocking" resultType="com.team.block.VO.BlockVO">
-		select blocking_id
-		from Block
-		where blocker_id = #{blocker_id}
+		select blocking_id select *
+		from Block from Block
+		where blocker_id = #{blocker_id} where blocking_id = #{blocking_id}
 	</select>
-	
-	<delete id="Deleteblocking" parameterType="com.team.block.VO.BlockVO">
+
+
+	<delete id="Deleteblocking"
+		parameterType="com.team.block.VO.BlockVO">
 		delete from Block
-		where blocking_id = #{blocking_id} and blocker_id = #{blocker_id}
+		where blocking_id = #{blocking_id} and
+		blocker_id = #{blocker_id}
 	</delete>
-	
-	
-	<insert id="Insertblocking" parameterType="com.team.block.VO.BlockVO">
+
+
+	<insert id="Insertblocking"
+		parameterType="com.team.block.VO.BlockVO">
 		insert into Block (blocker_id, blocking_id, Block_date)
-		values (#{blocker_id}, #{blocking_id}, now())	
+		values (#{blocker_id}, #{blocking_id}, now())
 	</insert>
-	
-	
-	<select id="Isblocking" parameterType="com.team.block.VO.BlockVO" resultType="int">
+
+
+	<select id="Isblocking"
+		parameterType="com.team.block.VO.BlockVO" resultType="int">
 		select count(*)
 		from Block a
 		where exists(select *
-					from Block b
-					where b.blocking_id = #{blocking_id} and b.blocker_id = #{blocker_id})
-	
+		from Block b
+		where b.blocking_id =
+		#{blocking_id} and b.blocker_id = #{blocker_id})
+
 	</select>
 
 

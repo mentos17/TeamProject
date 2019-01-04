@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.message.Mapper.messageMapper">
+	
+	<!-- 쪽지 전체 목록 -->
+	<select id="listAll" resultType="MessageVO">
+		SELECT MESSAGE_NO, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_SUBJECT, MESSAGE_CONTENT, MESSAGE_SENDTIME, MESSAGE_READTIME, MESSAGE_READVAL 
+		FROM TB_MESSAGE
+		ORDER BY MESSAGE_SENDTIME DESC
+	</select>
+
+	<!-- 읽지 않은 쪽지 수 -->
+	<select id="count" resultType="int" parameterType="String">
+		SELECT COUNT(*) FROM TB_MESSAGE
+		WHERE MESSAGE_RECEIVER = #{message_id} 
+		AND MESSAGE_READVAL IS NULL
+	</select>	
+
+	<!-- 쪽지 작성 -->
+	<insert id="insert">
+		INSERT INTO TB_MESSAGE
+		(MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_SUBJECT, MESSAGE_CONTENT, MESSAGE_SENDTIME)
+		VALUES
+		(#{MESSAGE_SENDER}, #{MESSAGE_RECEIVER}, #{MESSAGE_SUBJECT}, #{MESSAGE_CONTENT}, NOW())
+	</insert>
+	
+	<!-- 쪽지 상세 내용 -->
+	<select id="view" resultType="MessageVO" parameterType="MessageVO">
+		SELECT * 
+		FROM TB_MESSAGE
+		WHERE MESSAGE_NO = #{MESSAGE_NO}
+	</select>
+	
+	<!-- 쪽지를 읽을 시, 읽지않음이 읽은 날짜로 변경된다. -->
+	<update id="readvaltrue">
+		UPDATE TB_MESSAGE
+		SET MESSAGE_READVAL = true,
+			MESSAGE_READTIME = now()
+		WHERE MESSAGE_NO = #{MESSAGE_NO}
+		AND MESSAGE_READVAL IS NULL
+	</update>
+	
+	<!-- 내가 보낸 쪽지 상세 내용 -->
+	<select id="sendView" resultType="MessageVO" parameterType="MessageVO">
+		SELECT * 
+		FROM TB_MESSAGE
+		WHERE MESSAGE_NO = #{MESSAGE_NO}
+	</select>
+	
+	<!-- 쪽지 삭제 -->
+	<delete id="deleteMessage">
+		DELETE 
+		FROM TB_MESSAGE
+		WHERE MESSAGE_NO = #{MESSAGE_NO}
+	</delete>
+	
+</mapper>

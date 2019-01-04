@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.member.DAO.MemberDAO">
+  <insert id="insertMember" parameterType="com.team.member.VO.MemberVO">
+    insert into MEMBER (ID, PWD, NAME, 
+      PHONE, EMAIL, PIC, 
+      DATE, MODDATE, FOLLOWER, 
+      FOLLOWING, BIRTH)
+    values (#{ID,jdbcType=VARCHAR}, #{PWD,jdbcType=VARCHAR}, #{NAME,jdbcType=VARCHAR}, 
+      #{PHONE,jdbcType=VARCHAR}, #{EMAIL,jdbcType=VARCHAR}, #{PIC,jdbcType=VARCHAR}, 
+      NOW(), #{MODDATE,jdbcType=DATE}, #{FOLLOWER,jdbcType=INTEGER}, 
+      #{FOLLOWING,jdbcType=INTEGER}, #{BIRTH,jdbcType=VARCHAR})
+  </insert>
+  
+  <select id="getMember" resultType="com.team.member.VO.MemberVO" 
+	        parameterType="String">
+		SELECT * FROM MEMBER WHERE ID= #{ID,jdbcType=VARCHAR}	
+	</select>
+	
+	<update id="updateMember" parameterType="com.team.member.VO.MemberVO">		
+		UPDATE MEMBER SET
+		PWD=#{PWD,jdbcType=VARCHAR}, NAME=#{NAME,jdbcType=VARCHAR}, PHONE=#{PHONE,jdbcType=VARCHAR}, EMAIL=#{EMAIL,jdbcType=VARCHAR}, MODDATE=NOW()
+		WHERE ID=#{ID,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="changePic">
+		UPDATE TB_MEMBER
+		SET PIC = #{PIC}
+		WHERE ID = #{ID}
+	</update>
+	
+	<select id="GetSearchMemberList" resultType="com.team.member.VO.MemberVO">
+		select *
+		from MEMBER
+		where ID like CONCAT("%",#{keyword},"%")
+		limit ${pageNum} , 12
+	</select>
+	
+	
+  
+</mapper>

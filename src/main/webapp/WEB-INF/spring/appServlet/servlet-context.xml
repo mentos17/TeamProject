@@ -23,25 +23,26 @@
 		<beans:property name="suffix" value=".jsp" />
 		<beans:property name="order" value="2"/>
 	</beans:bean>
+
+	<!-- interceptor -->
+	<beans:bean id="loginInterceptor" class="com.team.login.Interceptor.LoginInterceptor"></beans:bean>
+	<beans:bean id="MemberInterceptor" class="com.team.member.Interceptor.MemberInterceptor"></beans:bean>
 	
-	<websocket:handlers>
-		<websocket:mapping handler="myHandler" path="/echo-ws"/>
-	</websocket:handlers>
-	<beans:bean id="myHandler" class="com.team.chatHandler.MultiChatWebSocketHandler"/>
 	
-	<!-- tiles -->
-	<beans:bean id="tilesViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
-		<beans:property name="order" value="1"/>
-	</beans:bean>
+	<interceptors>
+		<interceptor>
+			<mapping path="/main"/>
+			<mapping path="/**/mypage"/>
+			<beans:ref bean = "loginInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/**/follower"/>
+			<mapping path="/**/following"/>
+			<mapping path="/**/gallery"/>
+			<beans:ref bean = "MemberInterceptor"/>
+		</interceptor>
+	</interceptors>
 	
-	<beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
-		<beans:property name="definitions">
-			<beans:list>
-				<beans:value>/WEB-INF/tiles/tiles.xml</beans:value>
-			</beans:list>
-		</beans:property>
-	</beans:bean>
 	<!-- 파일업로드 필요한 bean -->
 	<beans:bean id="multipartResolver" class ="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<!-- 파일업로드 용량 -->
@@ -50,9 +51,24 @@
 	
 	<!-- 파일업로드 위한 디렉토리 설정 -->
 	<beans:bean id="uploadPath" class="java.lang.String">
-		<beans:constructor-arg value ="D://upload"/>
+		<beans:constructor-arg value ="D:\upload"/>
 	</beans:bean>
 	
+	<!-- NaverLoginBO Class에 대한 Bean설정 추가 -->
+	<beans:bean id="naverLoginBO" class="com.team.member.snslogin.NaverLoginBO" />
 	
-	<context:component-scan base-package="com.team" />
+	<!-- google Class Bean설정 추가 -->
+	<!-- 클라이언트ID와 보안비밀 세팅-->
+	<beans:bean id="googleConnectionFactory"
+		class="org.springframework.social.google.connect.GoogleConnectionFactory">
+		<beans:constructor-arg value="1019805565939-clpcv5ar1dn430k2ihe95mbs7t6pslif.apps.googleusercontent.com" />
+		<beans:constructor-arg value="xD8_oyObClhzIf2lzUiRGPtL" />
+	</beans:bean>
+	<!-- 승인된 자바스크립트 원본과 승인된 리디렉션 URI -->
+	<beans:bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
+		<beans:property name="scope" value="https://www.googleapis.com/auth/plus.login" />
+		<beans:property name="redirectUri" value="http://localhost:8080/TeamPro/oauth2callback" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.team.*" />
 </beans:beans>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace = "com.team.gallery.DAO.GalleryDAO">
+	<insert id="GalleryInsert" parameterType="com.team.gallery.VO.galleryVO">
+		insert into TB_gallery (gb_Num,mb_ID,gb_Content,gb_Date,gb_IP,gb_Privacy)
+		VALUES(#{gb_Num},#{mb_ID},#{gb_Content},#{gb_Date},#{gb_IP},#{gb_Privacy})
+	</insert>
+	
+	<select id="maxNum" resultType="int">
+		select Max(GB_Num)
+		from TB_gallery
+	</select>
+	
+	<select id="GetMyGalleryList" resultType="com.team.gallery.VO.galleryVO">
+		select  f.follower_id, g.GB_Num, g.MB_ID, g.GB_Content, g.GB_Date, g.GB_IP, g.GB_Privacy, fi.gb_File
+		from TB_FOLLOW f , TB_gallery g, TB_FILE fi
+		where f.following_id = g.MB_ID and f.follower_id = #{my_id} and g.gb_Num = fi.gb_Num
+		order by g.GB_Num desc; 
+	</select>
+	
+	<select id="GetSpecGalleryList" resultType="com.team.gallery.VO.galleryVO">
+		select g.gb_Num,g.mb_ID,g.gb_Content,g.gb_Date,g.gb_Privacy,f.gb_File
+		from TB_gallery g, TB_FILE f
+		where g.MB_ID = #{id} and g.gb_Num = f.gb_Num
+		order by GB_Num desc;
+	</select>
+	
+	<select id="GetImgList" parameterType="com.team.gallery.VO.galleryVO" resultType="com.team.gallery.VO.galleryVO">
+		select i.IM_Num, i.IM_File
+		from TB_gallery g, TB_image i
+		where g.GB_Num = i.IM_Num and g.mb_id = #{mb_ID} and IM_Num = #{im_Num};
+	</select>
+	
+</mapper>

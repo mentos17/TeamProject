@@ -1,6 +1,7 @@
 package com.team.follow.Service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,15 +16,15 @@ public class FollowServiceImpl implements FollowService {
 	private FollowDAO followDAO;
 	
 	@Override
-	public List<FollowVO> GetAllFollower(String id) {
+	public List<FollowVO> GetAllFollower(Map<String, String> FollowerInfo) {
 		// 해당 아이디의 모든 팔로워 목록 리턴(follower_id, follow_date)
-		return followDAO.GetAllFollower(id);
+		return followDAO.GetAllFollower(FollowerInfo);
 	}
 
 	@Override
-	public List<FollowVO> GetAllFollowing(String id) {
+	public List<FollowVO> GetAllFollowing(Map<String, String> FollowingInfo) {
 		// 해당 아이디의 모든 팔로잉 목록 리턴(following_id, follow_date)
-		return followDAO.GetAllFollowing(id);
+		return followDAO.GetAllFollowing(FollowingInfo);
 	}
 
 	@Override
@@ -40,5 +41,13 @@ public class FollowServiceImpl implements FollowService {
 	public boolean IsFollowing(FollowVO vo) {
 		return followDAO.IsFollowing(vo);
 	}
+
+	@Override
+	public List<FollowVO> getNotFollowingList(String id) {
+		return followDAO.getNotFollowingList(id);
+	}
+	
+	
+	
 	
 }

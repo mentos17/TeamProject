@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.deal.Mapper.DealMapper">
+
+	<!-- 게시물 목록 불러오기 -->
+	<select id="dealList" resultType="DealDTO">
+		select DEAL_NUM, DEAL_ID, DEAL_SUBJECT, DEAL_CONTENT, DEAL_REGION, DEAL_IMG, DEAL_READCOUNT, DEAL_DATETIME
+		from TB_DEAL
+		order by DEAL_NUM desc
+	</select>
+	
+	<!-- 게시물 작성 -->
+	<insert id="dealWriter">
+		insert into TB_DEAL
+		(DEAL_NUM, DEAL_ID, DEAL_SUBJECT, DEAL_CONTENT, DEAL_REGION, DEAL_IMG, DEAL_READCOUNT, DEAL_DATETIME)
+		values
+		(#{DEAL_NUM},#{DEAL_ID},#{DEAL_SUBJECT},#{DEAL_CONTENT},#{DEAL_REGION},#{DEAL_IMG},#{DEAL_READCOUNT},#{DEAL_DATETIME})
+	</insert>
+	
+	<!-- 게시글 상세 내용 조회 -->
+	<select id="dealRead" resultType="DealDTO">
+		select deal_num,deal_id,deal_subject,deal_content,deal_region,deal_img,deal_readcount,deal_datetime
+		from tb_deal where deal_num = #{DEAL_NUM}
+	</select>
+	
+	<!-- 게시글 수정하기 -->
+	<update id="dealUpdate">
+		update tb_deal set deal_subject=#{DEAL_SUBJECT},deal_content=#{DEAL_CONTENT},deal_region=#{DEAL_REGION},
+		deal_img=#{DEAL_IMG} where deal_num=#{DEAL_NUM}
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="dealDelete">
+		delete from tb_deal where deal_num=#{DEAL_NUM}
+	</delete>
+	
+	<select id="dealListWithPaging" resultType="DealDTO">
+		<![CDATA[
+			select deal_num,deal_id,deal_subject,deal_content,deal_region,deal_img,deal_readcount,deal_datetime
+			from tb_deal
+			where deal_num>0
+			order by deal_num desc, deal_datetime desc
+			limit #{pageNum},#{amount}
+		]]>
+		
+	</select>
+</mapper>

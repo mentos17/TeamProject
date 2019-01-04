@@ -1,19 +1,97 @@
 @CHARSET "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&subset=korean');
 .main{
-/* 	background: linear-gradient(135deg, #b795f4, #78f3de)fixed; */
-	background-image: url(back-02.jpg);
+	background-image: url(../img/back-02.jpg);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-position: top center;
 	background-size: cover; 
 }
-#bar{
-	background-color: white;
-	display:table;
+body{font-family:'Nanum Gothic', sans-serif;}
+.main_form{
+	display: table; margin-left: auto; margin-right: auto;	 	
 }
-#icon{padding: 5px;}
-.margin_20{
-	margin: 20px;
+
+/* header */
+.header{width: 100%;
+		z-index: 999;
+		position: fixed;
+		border-bottom: solid 1px #4497fd;}
+.top-bar {background: white;
+    	  border-bottom: 1px solid white;
+    	  padding: 10px 2px;}		  
+#bar_icon a i{display: block;
+			  padding: auto;
+			  font-size: 20px;}
+#board_i{color: #2be4ff;}
+#message_i{color: #31b7ff;}
+#chat_i{font-size: 25px;
+		color: #5293fe;}
+#alarm_i{font-size: 20px;
+		 color: #597eff;}		
+.babylogo{
+	position: relative;
 }
-#bar .baby{display:table-cell;
-      		margin-top: 5px;
-      		margin-bottom: 5px;}
+.babylogo img{
+	position: absolute; 
+	left: 50%; 
+	transform: translate(-50%, -0%);	
+}
+#bar_left{
+	text-align: left;	
+}
+#user_i{font-size: 25px;
+		color: #4497fd;} 
+a{
+	text-decoration: none;
+}
+#dropdown_menu a{
+	font-weight: 600;
+	text-align: right;
+}
+		 
+/* side-left */
+.image_wrapper{
+	width: 90%;
+	margin-left: auto;
+    margin-right: auto;
+}
+.image_wrapper img{
+	display: block;
+	max-width: 100%; height: auto;
+}
+.member_icon i{
+	font-size: 18px;
+	color: #4497fd; 
+}
+.uploadBtn{
+		  width: 250px;
+		  height: 50px;
+		  border-radius: 5px;
+		  background-color: #cbcbcd;
+		  border: none;
+		  padding: 2px;
+		  color: white;
+		  font-weight: 600;	
+}		
+
+
+/* 검색창 */
+#search_keyword{
+
+  border: 2px solid #6297ff;
+  border-radius: 4px;
+}
+
+/* 버튼 크기 조절 할 때. */
+.smallSizeFont{
+	font-size: 12px;
+}
+
+
+a:hover{
+	text-decoration: none !important;
+}

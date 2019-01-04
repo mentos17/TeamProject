@@ -1,0 +1,45 @@
+@charset "UTF-8";
+/* message List */
+.btn_Message{margin-top: 30px;}
+#messageSend{border-radius: 5px;
+		  background-color: #4497fd;
+		  border: none;
+		  padding: 5px 10px;
+		  color: white;
+		  font-weight: 500;}
+.sendMessageList{border-radius: 5px;
+		  background-color: #cbcbcd;
+		  border: none;
+		  padding: 5px 10px;
+		  color: white;
+		  font-weight: 500;}
+#delete_i{font-size: 18px;
+		  color: #78787c;}
+		  
+/* message sendform*/		  
+#sendForm{margin-top: 50px;}
+.messageText{margin-bottom: 3px;
+			 border-radius: 5px;
+			 border: 1px solid #4497fd;}
+#sendForm textarea{
+			 margin-bottom: 3px;
+			 border-radius: 5px;
+			 border: 1px solid #4497fd;}
+#send_text{line-height: 50px;}
+.send_text_td{font-weight: 600;}
+.send_btn{display: inline-block;
+		  margin-top: 5px;}
+#sendBtn{border-radius: 5px;
+		  background-color: #4497fd;
+		  border: none;
+		  padding: 5px 10px;
+		  color: white;
+		  font-weight: 600;}
+#closeBtn{border-radius: 5px;
+		  background-color: #cbcbcd;
+		  border: none;
+		  padding: 5px 10px;
+		  color: white;
+		  font-weight: 600;}
+
+/* message viewform*/

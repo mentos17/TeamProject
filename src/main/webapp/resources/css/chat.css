@@ -1,0 +1,75 @@
+@charset "UTF-8";
+#positionLayer{ 
+	overflow: auto;
+	-ms-overflow-style: none;
+	::-webkit-scrollbar {
+		display:none;
+	}
+	right: 0; 
+	bottom: 0; 
+	z-index: 10000; 
+	border: none; 
+	text-align: center;	
+}
+#chat_title{background-color: #4497fd;}
+#btnSend{font-size:16px; 
+			 font-weight:600; 
+			 background-color: #4497fd; 
+			 border-radius: 5px;
+			 border: 1px solid #4497fd;
+			 color:#ffffff; 
+			 width: 70px;}
+#closeBtn{font-size:16px; 
+			 font-weight:600; 
+			 background-color: #cbcbcd;
+			 border-radius: 5px;
+			 border: 1px solid #cbcbcd;
+			 color:#ffffff; 
+			 width: 70px;}
+.chatInput{border-radius: 5px;
+			border: 1px solid #4497fd;
+			width: 95%;}
+#discussion{list-style: none;}
+.balloon{
+    position: relative;
+    padding: 15px;
+    margin-bottom: 1em 1em 3em;
+    background: #cbcbcd;
+    color: #fff;
+    -webkit-border-radius: 5px;
+ 	-moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.balloon.left{
+	margin-right: 40px;
+	background: #cbcbcd;
+}
+.balloon.right{
+	margin-left: 40px;
+	background: #4497fd;
+}
+.balloon:after{
+	content:"";
+    position:absolute;
+	bottom:-20px;
+  	left:50px; 
+ 	border-width:20px 0 0 20px;
+  	border-style:solid;
+  	border-color:#cbcbcd transparent;
+ 	display:block;
+ 	width:0;
+}
+.balloon.left:after{
+	top:16px;
+  	left:-40px;
+ 	bottom:auto;
+ 	border-width:15px 40px 0 0;
+ 	border-color:transparent #cbcbcd;	
+}
+.balloon.right:after {
+	  top:16px;
+	  left:-40px;
+	  bottom:auto;
+	  border-width:15px 40px 0 0; 
+	  border-color:transparent #4497fd;
+}
